@@ -125,10 +125,10 @@ void PDYSHA009::readDatabase()
 
 void PDYSHA009::saveDatabase()
 {
-	std::cout<<"saveDatabase called."<<std::endl;
+	std::cout<<"saveDatabase() called."<<std::endl;
 	if (studentArr.size() == 0 && databaseArr.size()==0) {
 		//std::cout<<"size"<<studentArr.size()<<std::endl;
-		std::cout << "No student record to add to database \n";
+		std::cout << "No student records to add to database \n";
 	}
 	else {
 
@@ -183,19 +183,19 @@ void PDYSHA009::getStudentData(std::string snum)
 			found = true;
 			break;
 		}
-		else {
+		/*else {
 			found = false;
-		}
+		}*/
 	}
 	if (found==false) {
-		std::cout << "Student not found on database! \n";
+		std::cout << "Student not found in database\n";
 	}
 	std::cout << std::endl;
 }
 
 void PDYSHA009::getStudentGrade(std::string snum)
 {
-	std::cout<<"getStudentGrade called."<<std::endl;
+	std::cout<<"getStudentGrade() called."<<std::endl;
 	readDatabase();
 	bool found = false;
 	std::string grades;
@@ -211,20 +211,19 @@ void PDYSHA009::getStudentGrade(std::string snum)
 		}
 	}
 	if (found==false) {
-		std::cout << "Student not found on database! \n";
+		std::cout << "Student not found in database \n";
 	}
 	else {
 		int total = 0;
-		int count = 0;
+		int counter = 0;
 		std::istringstream iss(grades);
 		while (!iss.eof()) {
-			count++;
+			counter++;
 			int n;
 			iss >> n;
 			total += n;
-			//std::cout << "value=" << n << std::endl;
 		}
-		std::cout << "Average grade of student is " << total/count << std::endl;
+		std::cout << "student grade average: " << total/counter << std::endl;
 	}
 	std::cout << std::endl;
 }
