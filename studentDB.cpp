@@ -20,7 +20,6 @@ std::vector<StudentRecord> databaseArr;
 void PDYSHA009::addStudent(std::string n, std::string sn, std::string snum, std::string g)
 {
 	std::cout<<"addStudent() called."<<std::endl;
-	//create new student without constructor
 	StudentRecord studentTemp;
 	studentTemp.name=n;
 	studentTemp.surname=sn;
@@ -37,6 +36,7 @@ void PDYSHA009::addStudent(std::string n, std::string sn, std::string snum, std:
 	else{
 
 	for (int i = 0; i < studentArr.size(); i++) {
+	//check in the new entries if the student is there
 		if (studentArr[i].studentNumber == snum) {
 			studentArr[i].name = studentTemp.name;
 			studentArr[i].surname = studentTemp.surname;
@@ -51,6 +51,7 @@ void PDYSHA009::addStudent(std::string n, std::string sn, std::string snum, std:
 	}//end of for loop
 
 	for (int i = 0; i < databaseArr.size(); i++) {
+	//check in the saved entries if the student is there
 		if (databaseArr[i].studentNumber == snum) {
 			databaseArr[i].name = studentTemp.name;
 			databaseArr[i].surname = studentTemp.surname;
@@ -66,9 +67,6 @@ void PDYSHA009::addStudent(std::string n, std::string sn, std::string snum, std:
 		if(found==false){//if the student was not found then add it
 			//add the student to the vector array if not already there
 			studentArr.push_back(studentTemp);
-			std::cout<<"size "<<studentArr.size()<<std::endl;
-			std::cout<<"size "<<databaseArr.size()<<std::endl;
-			
 		}		
 		
 	}//end of else
@@ -147,7 +145,7 @@ void PDYSHA009::saveDatabase()
 				myfile << studentArr[i].name << "\n";
 				myfile << studentArr[i].surname << "\n";
 				myfile << studentArr[i].studentNumber << "\n";
-				myfil << studentArr[i].classRecord << "\n";
+				myfile << studentArr[i].classRecord << "\n";
 				myfile << "\n";
 			}
 			myfile.close();
@@ -173,7 +171,7 @@ void PDYSHA009::getStudentData(std::string snum)
 	}
 
 	if (found==false) {
-		std::cout << "Student not found in database, make sure record has been saved to DB\n";
+		std::cout << "Student not found in database, make sure record has been saved to the database\n";
 	}
 	std::cout << std::endl;
 }
@@ -193,7 +191,7 @@ void PDYSHA009::getStudentGrade(std::string snum)
 	}
 
 	if (found==false) {
-		std::cout << "Student not found in database, make sure record has been saved to DB \n";
+		std::cout << "Student not found in database, make sure record has been saved to the database \n";
 	}
 	else {
 		int total = 0;
