@@ -87,39 +87,30 @@ void PDYSHA009::readDatabase()
 	std::string line;
 
 	std::ifstream in(filename.c_str());
+	int counter =1;
 
 	if(!in)
-		{ std::cout << "Couldn't open " << filename << std::endl; }
+		{ std::cout << "Couldn't open file" << filename << std::endl; }
 
 	while(getline(in, line)) {
 
-		if (line.find("Student #") != std::string::npos) {
-			continue;
-		}
-		else {
-			if (line.find("Name") != std::string::npos) {
-				size_t name_found = line.find_last_of(":");
-				studentTemp.name = line.substr(name_found+2);
-			}
-
-			if (line.find("Surname") != std::string::npos) {
-				size_t surname_found = line.find_last_of(":");
-				studentTemp.surname = line.substr(surname_found+2);
-			}
-
-			if (line.find("Student Number") != std::string::npos) {
-				size_t studentnum_found = line.find_last_of(":");
-				studentTemp.studentNumber = line.substr(studentnum_found+2);
-			}
-
-			if (line.find("Class Record") != std::string::npos) {
-				size_t classrec_found = line.find_last_of(":");
-				studentTemp.classRecord = line.substr(classrec_found+2);
-				databaseArr.push_back(studentTemp);
-			}
-		}
+		if(counter == 1)
+		{studentTemp.name=line;
+		counter++;}
+		else if(counter == 2)
+		{studentTemp.surname = line;
+		counter++;}
+		else if(counter == 3)
+		{studentTemp.studentNumber = line;
+		counter++;}
+		else if(counter == 4)
+		{studentTemp.classRecord = line;
+		databaseArr.push_back(studentTemp);
+		counter++;}
+		else if(counter == 5)
+		{counter=1;}
 		
-	}//std::cout << databaseArr.size() << std::endl;
+	}
 	
 }
 
@@ -127,40 +118,36 @@ void PDYSHA009::saveDatabase()
 {
 	std::cout<<"saveDatabase() called."<<std::endl;
 	if (studentArr.size() == 0 && databaseArr.size()==0) {
-		//std::cout<<"size"<<studentArr.size()<<std::endl;
 		std::cout << "No student records to add to database \n";
 	}
 	else {
-
-				
-		
 		std::ofstream myfile;
 
 		myfile.open("Student Database");
 			std::cout << "Updating changes to database... \n";
 			for (int i = 0; i < databaseArr.size(); i++) {
-				myfile << "Student #" << i+1 << "\n";
-				myfile << "Name: " << databaseArr[i].name << "\n";
-				myfile << "Surname: " << databaseArr[i].surname << "\n";
-				myfile << "Student Number: " << databaseArr[i].studentNumber << "\n";
-				myfile << "Class Record: " << databaseArr[i].classRecord << "\n";
+
+				myfile << databaseArr[i].name << "\n";
+				myfile << databaseArr[i].surname << "\n";
+				myfile << databaseArr[i].studentNumber << "\n";
+				myfile << databaseArr[i].classRecord << "\n";
 				myfile << "\n";
 			}
 			myfile.close();
-		//end of database update
+		//end of updating changes to db file, updated existing record
+		//now any new entered records will be written
 
 			readDatabase();
-			std::cout<<"new entries"<<studentArr.size()<<std::endl;
-			int number_of_students = databaseArr.size();
+	
 			myfile.open("Student Database", std::ofstream::app);
 			std::cout << "adding new entries to file... \n";
 
 			for (int i = 0; i < studentArr.size(); i++) {
-				myfile << "Student #" << ++number_of_students << "\n";
-				myfile << "Name: " << studentArr[i].name << "\n";
-				myfile << "Surname: " << studentArr[i].surname << "\n";
-				myfile << "Student Number: " << studentArr[i].studentNumber << "\n";
-				myfile << "Class Record: " << studentArr[i].classRecord << "\n";
+
+				myfile << studentArr[i].name << "\n";
+				myfile << studentArr[i].surname << "\n";
+				myfile << studentArr[i].studentNumber << "\n";
+				myfil << studentArr[i].classRecord << "\n";
 				myfile << "\n";
 			}
 			myfile.close();
@@ -183,12 +170,10 @@ void PDYSHA009::getStudentData(std::string snum)
 			found = true;
 			break;
 		}
-		/*else {
-			found = false;
-		}*/
 	}
+
 	if (found==false) {
-		std::cout << "Student not found in database\n";
+		std::cout << "Student not found in database, make sure record has been saved to DB\n";
 	}
 	std::cout << std::endl;
 }
@@ -202,16 +187,13 @@ void PDYSHA009::getStudentGrade(std::string snum)
 	for (int i = 0; i < databaseArr.size(); i++) {
 		if (databaseArr[i].studentNumber == snum) {
 			grades = databaseArr[i].classRecord;
-			//std::cout << databaseRec[i].classRecord << "\n";
 			found = true;
 			break;
 		}
-		else {
-			found = false;
-		}
 	}
+
 	if (found==false) {
-		std::cout << "Student not found in database \n";
+		std::cout << "Student not found in database, make sure record has been saved to DB \n";
 	}
 	else {
 		int total = 0;
